@@ -43,10 +43,3 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-//heroku
-
-apply plugin:'application'
-mainClassName = "kotlin.us.tla.TwtLikaAppApplication.kt"
-applicationName = "twtLikaApp"
-task stage(dependsOn: ['clean', 'installApp'])
