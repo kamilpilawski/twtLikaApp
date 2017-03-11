@@ -1,2 +1,0 @@
-use twt;
-show tables;
