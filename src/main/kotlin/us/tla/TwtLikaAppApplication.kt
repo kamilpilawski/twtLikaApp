@@ -10,3 +10,4 @@ fun main(args: Array<String>) {
     SpringApplication.run(TwtLikaAppApplication::class.java, *args)
     println("Hi how ")
 }
+
