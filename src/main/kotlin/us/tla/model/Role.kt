@@ -17,7 +17,7 @@ class Role {
     lateinit var description: String
 
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     @JsonBackReference
     lateinit var users: List<User>
 
