@@ -18,7 +18,7 @@ class User {
 
     lateinit var password: String
 
-    @ManyToMany(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    @ManyToMany(/*cascade = arrayOf(CascadeType.ALL),*/ fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = arrayOf(JoinColumn(name = "user_iduser", referencedColumnName = "iduser")),
             inverseJoinColumns = arrayOf(JoinColumn(name = "role_idrole", referencedColumnName = "idrole")))

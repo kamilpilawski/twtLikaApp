@@ -46,9 +46,8 @@ class UserController {
     @RequestMapping("{id}", method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
     fun find(@PathVariable id: Long): ResponseEntity<User?> {
         logger.info("findUser: $id")
-        val users = userRepo.findAll()
-        println(users.joinToString("\n"))
-        val user = users.first()
+        val user = userRepo.findOne(id)
+
         logger.info("Result: $user")
         return ResponseEntity(user, HttpStatus.OK)
     }
