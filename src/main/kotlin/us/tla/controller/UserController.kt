@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.User
 import us.tla.repository.UserRepo
+import java.util.*
 
 /**
  * Created by Kamil on 12.03.2017.
@@ -43,12 +44,16 @@ class UserController {
         return ResponseEntity(HttpStatus.OK)
     }
 
-    @RequestMapping("{id}", method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
-    fun find(@PathVariable id: Long): ResponseEntity<User> {
+    @GetMapping("{id}")
+    fun find(@PathVariable id: Long): ResponseEntity<Optional<User>> {
         logger.info { "findUser: $id" }
         val user = userRepo.findOne(id)
         logger.info { "Result: $user" }
-        return ResponseEntity(user, HttpStatus.OK)
+        if(null!=user) {
+            return ResponseEntity(user, HttpStatus.OK)
+        }else {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 
     @GetMapping("list")
