@@ -47,7 +47,6 @@ class UserController {
     fun find(@PathVariable id: Long): ResponseEntity<User?> {
         logger.info { "findUser: $id" }
         val user = userRepo.findOne(id)
-
         logger.info { "Result: $user" }
         return ResponseEntity(user, HttpStatus.OK)
     }
