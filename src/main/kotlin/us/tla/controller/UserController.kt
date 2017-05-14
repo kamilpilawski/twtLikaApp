@@ -2,14 +2,12 @@ package us.tla.controller
 
 
 import mu.KLogging
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.User
 import us.tla.repository.UserRepo
-import java.util.*
 
 /**
  * Created by Kamil on 12.03.2017.
@@ -40,20 +38,22 @@ class UserController {
     @DeleteMapping("delete")
     fun delete(@RequestParam userId: Long): ResponseEntity<User> {
         logger.info { "destroyUser: $userId" }
-        userRepo.delete(userId)
+        userRepo.deleteById(userId)
         return ResponseEntity(HttpStatus.OK)
     }
 
     @GetMapping("{id}")
-    fun find(@PathVariable id: Long): ResponseEntity<Optional<User>> {
+    fun find(@PathVariable id: Long): ResponseEntity<User> {
         logger.info { "findUser: $id" }
-        val user = userRepo.findOne(id)
-        logger.info { "Result: $user" }
-        if(null!=user) {
-            return ResponseEntity(user, HttpStatus.OK)
-        }else {
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        }
+        val user = userRepo.findById(id)
+        logger.info { "Result: ${user.orElse(User())}" }
+
+        return ResponseEntity(
+                user.orElse(User()),
+                if (user.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+
+
     }
 
     @GetMapping("list")

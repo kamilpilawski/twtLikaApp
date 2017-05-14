@@ -18,10 +18,11 @@ buildscript {
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
 
 jar {
 	baseName = 'twtLikaApp'
-	version = '0.0.1-SNAPSHOT'
+	version = null
 }
 
 sourceCompatibility = 1.8

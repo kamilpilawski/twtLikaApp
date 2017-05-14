@@ -17,9 +17,9 @@ class Role {
     lateinit var description: String
 
 
-//    @OneToMany(mappedBy = "roles",fetch = FetchType.LAZY)
-//    @JsonBackReference
-//    lateinit var users: List<User>
+    @OneToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+    @JsonBackReference
+    lateinit var users: List<User>
 
     override fun toString(): String {
         return "Role(id=$id, title='$title', description='$description')"

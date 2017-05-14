@@ -7,5 +7,5 @@ import us.tla.model.User
  * Created by Kamil on 11.03.2017.
  */
 interface UserRepo : CrudRepository<User, Long> {
-    fun findById(id: Long): User
+//    fun findById(id: Long): User
 }

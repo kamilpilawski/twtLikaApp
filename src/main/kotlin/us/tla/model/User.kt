@@ -14,16 +14,17 @@ class User {
     @Column(name = "iduser")
     var id: Long = 0L
 
-    lateinit var email: String
+    var email: String = ""
 
-    lateinit var password: String
+    var password: String = ""
 
     @ManyToMany(/*cascade = arrayOf(CascadeType.ALL),*/ fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = arrayOf(JoinColumn(name = "user_iduser", referencedColumnName = "iduser")),
             inverseJoinColumns = arrayOf(JoinColumn(name = "role_idrole", referencedColumnName = "idrole")))
     @JsonManagedReference
-    lateinit var roles: MutableList<Role>
+    var roles: MutableList<Role>? = null
+
 
     override fun toString(): String {
         return "User(id=$id, email='$email', password='$password', roles=$roles)"
