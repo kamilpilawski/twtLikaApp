@@ -52,8 +52,6 @@ class UserController {
                 user.orElse(User()),
                 if (user.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
-
-
     }
 
     @GetMapping("list")
