@@ -10,7 +10,7 @@ import javax.persistence.*
 class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iduser")
     val id: Long = 0L
 
@@ -18,11 +18,10 @@ class User {
 
     val password: String = ""
 
-    @ManyToMany(/*cascade = arrayOf(CascadeType.ALL),*/ fetch = FetchType.EAGER)
+    @OneToMany(/*cascade = arrayOf(CascadeType.ALL),*/ fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = arrayOf(JoinColumn(name = "user_iduser", referencedColumnName = "iduser")),
             inverseJoinColumns = arrayOf(JoinColumn(name = "role_idrole", referencedColumnName = "idrole")))
-    @JsonManagedReference
     val roles: MutableList<Role>? = null
 
     override fun toString(): String {

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import us.tla.model.Post
-import us.tla.model.User
 import us.tla.repository.PostRepo
 
 /**
@@ -25,13 +24,15 @@ class PostController {
     lateinit var postRepo: PostRepo
 
     @GetMapping("/user/{userId}")
-    fun findByUserId(@PathVariable userId: Long): ResponseEntity<Post> {
+    fun findByUserId(@PathVariable userId: Long): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $userId" }
-        val post =postRepo.findAllByUserId(userId)
-        logger.info { "Result: ${post.orElse(Post())}" }
+        val post = postRepo.findAllByUserId(userId)
+        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+        println(post.orElse(emptyList()).joinToString("\n"))
 
         return ResponseEntity(
-                post.orElse(Post()),
+                post.orElse(emptyList()),
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
     }

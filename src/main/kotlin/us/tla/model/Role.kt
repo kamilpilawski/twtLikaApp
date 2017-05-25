@@ -10,7 +10,6 @@ import javax.persistence.*
 class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idrole")
     val id: Long = 0L
     val title: String = ""

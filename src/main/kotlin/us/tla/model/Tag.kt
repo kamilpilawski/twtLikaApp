@@ -9,7 +9,7 @@ import javax.persistence.*
 class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtag")
     val id: Long = 0L
     val title: String = ""

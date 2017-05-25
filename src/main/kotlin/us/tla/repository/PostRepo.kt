@@ -8,5 +8,5 @@ import java.util.*
  * Created by Kamil on 24.05.2017.
  */
 interface PostRepo : CrudRepository<Post, Long> {
-    fun findAllByUserId(id: Long): Optional<Post>
+    fun findAllByUserId(id: Long): Optional<List<Post>>
 }
