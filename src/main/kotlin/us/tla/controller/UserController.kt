@@ -42,7 +42,7 @@ class UserController {
         return ResponseEntity(HttpStatus.OK)
     }
 
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     fun findById(@PathVariable id: Long): ResponseEntity<User> {
         logger.info { "findUser: $id" }
         val user = userRepo.findById(id)

@@ -14,7 +14,6 @@ data class Post(
         val id: Long = 0,
         val title: String = "",
         val content: String = "",
-
         @Column(name = "user_iduser")
         val userId: Long = 0,
 
@@ -22,7 +21,7 @@ data class Post(
         @JoinTable(name = "tag_relation",
                 joinColumns = arrayOf(JoinColumn(name = "post_idpost", referencedColumnName = "idpost")),
                 inverseJoinColumns = arrayOf(JoinColumn(name = "tag_idtag", referencedColumnName = "idtag")))
-        val tags: MutableList<Tag>? = null
+        val postTags: MutableList<Tag>? = null
 ) {
     override fun toString(): String {
         return "Post(id=$id, title='$title', content='$content', userId=$userId)"

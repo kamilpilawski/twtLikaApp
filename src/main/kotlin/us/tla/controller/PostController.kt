@@ -21,6 +21,20 @@ class PostController {
     @Autowired
     lateinit var postRepo: PostRepo
 
+    @PostMapping("save")
+    fun save(@RequestBody post: Post): ResponseEntity<Post> {
+        logger.info { "addPost: $post" }
+        val savedPost = postRepo.save(post)
+        return ResponseEntity(savedPost, HttpStatus.OK)
+    }
+
+    @PutMapping("edit")
+    fun edit(@RequestBody post: Post): ResponseEntity<Post> {
+        logger.info { "editPost: $post" }
+        val savedPost = postRepo.save(post)
+        return ResponseEntity(savedPost, HttpStatus.OK)
+    }
+
     @GetMapping("user/{userId}")
     fun findByUserId(@PathVariable userId: Long): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $userId" }
@@ -55,7 +69,7 @@ class PostController {
     @GetMapping("tag/title/{title}")
     fun findByTagTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $title" }
-        val post = postRepo.findByTagsTitle(title)
+        val post = postRepo.findByPostTagsTitle(title)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(
@@ -67,7 +81,7 @@ class PostController {
     @GetMapping("tag/{id}")
     fun findByTagId(@PathVariable id: Long): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $id" }
-        val post = postRepo.findByTagsId(id)
+        val post = postRepo.findByPostTagsId(id)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(
