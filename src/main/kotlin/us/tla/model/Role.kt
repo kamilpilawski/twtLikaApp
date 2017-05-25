@@ -7,19 +7,17 @@ import javax.persistence.*
  * Created by Kamil on 12.03.2017.
  */
 @Entity
-class Role {
+data class Role(
+        @Id
+        @Column(name = "idrole")
+        val id: Long = 0,
+        val title: String = "",
+        val description: String = "",
 
-    @Id
-    @Column(name = "idrole")
-    val id: Long = 0L
-    val title: String = ""
-    val description: String = ""
-
-
-    @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @JsonBackReference
-    val users: List<User> = emptyList()
-
+        @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+        @JsonBackReference
+        val users: List<User> = emptyList()
+) {
     override fun toString(): String {
         return "Role(id=$id, title='$title', description='$description')"
     }

@@ -43,9 +43,21 @@ class UserController {
     }
 
     @GetMapping("{id}")
-    fun find(@PathVariable id: Long): ResponseEntity<User> {
+    fun findById(@PathVariable id: Long): ResponseEntity<User> {
         logger.info { "findUser: $id" }
         val user = userRepo.findById(id)
+        logger.info { "Result: ${user.orElse(User())}" }
+
+        return ResponseEntity(
+                user.orElse(User()),
+                if (user.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+    }
+
+    @GetMapping("{email}")
+    fun findByEmail(@PathVariable email: String): ResponseEntity<User> {
+        logger.info { "findUser: $email" }
+        val user = userRepo.findByEmail(email)
         logger.info { "Result: ${user.orElse(User())}" }
 
         return ResponseEntity(
@@ -59,6 +71,17 @@ class UserController {
         logger.info { "list users" }
         val users = userRepo.findAll()
         return ResponseEntity(users, HttpStatus.OK)
+    }
+
+    @GetMapping("list/role/{roleId}")
+    fun listByRoleId(@PathVariable roleId: Long): ResponseEntity<List<User>> {
+        logger.info { "list users by role id:$roleId" }
+        val users = userRepo.findAllByRolesId(roleId)
+
+        return ResponseEntity(
+                users.orElse(emptyList()),
+                if (users.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
     }
 
 

@@ -29,8 +29,6 @@ class PostController {
         val post = postRepo.findAllByUserId(userId)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
-        println(post.orElse(emptyList()).joinToString("\n"))
-
         return ResponseEntity(
                 post.orElse(emptyList()),
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
