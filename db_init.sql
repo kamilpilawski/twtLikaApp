@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `twt`.`tag_relation` (
   `tag_idtag` INT(11) NULL DEFAULT NULL,
   `post_idpost` INT(11) NULL DEFAULT NULL,
   `comment_idcomment` INT(11) NULL DEFAULT NULL,
-  `tag_relationcol` VARCHAR(45) NOT NULL AUTO_INCREMENT,
+  `tag_relationcol` INT(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`tag_relationcol`),
   INDEX `fk_tag_relation_tag1_idx` (`tag_idtag` ASC),
   INDEX `fk_tag_relation_post1_idx` (`post_idpost` ASC),
