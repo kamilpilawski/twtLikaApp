@@ -34,4 +34,41 @@ class PostController {
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
     }
+
+    @GetMapping("/title/{title}")
+    fun findByTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
+        logger.info { "find post by title: $title" }
+        val post = postRepo.findByTitle(title)
+        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+        return ResponseEntity(
+                post.orElse(emptyList()),
+                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+    }
+
+    @GetMapping("/tag/title/{title}")
+    fun findByTagTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
+        logger.info { "find post by user id: $title" }
+        val post = postRepo.findByTagsTitle(title)
+        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+        return ResponseEntity(
+                post.orElse(emptyList()),
+                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+    }
+
+    @GetMapping("/tag/{id}")
+    fun findByTagId(@PathVariable id: Long): ResponseEntity<List<Post>> {
+        logger.info { "find post by user id: $id" }
+        val post = postRepo.findByTagsId(id)
+        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+        return ResponseEntity(
+                post.orElse(emptyList()),
+                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+    }
+
 }

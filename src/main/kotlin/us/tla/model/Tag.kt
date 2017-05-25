@@ -1,5 +1,6 @@
 package us.tla.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import javax.persistence.*
 
 /**
@@ -11,7 +12,11 @@ data class Tag(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "idtag")
         val id: Long = 0,
-        val title: String = ""
+        val title: String = "",
+
+        @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+        @JsonBackReference
+        val posts: List<Post> = emptyList()
 ) {
     override fun toString(): String {
         return "Tag(id=$id, title='$title')"

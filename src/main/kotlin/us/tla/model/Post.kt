@@ -15,7 +15,13 @@ data class Post(
         val title: String = "",
         val content: String = "",
         @Column(name = "user_iduser")
-        val userId: Long = 0
+        val userId: Long = 0,
+
+        @OneToMany(fetch = FetchType.EAGER)
+        @JoinTable(name = "tag_relation",
+                joinColumns = arrayOf(JoinColumn(name = "post_idpost", referencedColumnName = "idpost")),
+                inverseJoinColumns = arrayOf(JoinColumn(name = "tag_idtag", referencedColumnName = "idtag")))
+        val tags: MutableList<Tag>? = null
 ) {
     override fun toString(): String {
         return "Post(id=$id, title='$title', content='$content', userId=$userId)"

@@ -9,4 +9,10 @@ import java.util.*
  */
 interface PostRepo : CrudRepository<Post, Long> {
     fun findAllByUserId(id: Long): Optional<List<Post>>
+
+    fun findByTitle(title: String): Optional<List<Post>>
+
+    fun findByTagsTitle(title: String): Optional<List<Post>>
+
+    fun findByTagsId(id: Long): Optional<List<Post>>
 }
