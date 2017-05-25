@@ -16,7 +16,11 @@ data class Tag(
 
         @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
         @JsonBackReference
-        val posts: List<Post> = emptyList()
+        val posts: List<Post> = emptyList(),
+
+        @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+        @JsonBackReference
+        val comments: List<Comment> = emptyList()
 ) {
     override fun toString(): String {
         return "Tag(id=$id, title='$title')"

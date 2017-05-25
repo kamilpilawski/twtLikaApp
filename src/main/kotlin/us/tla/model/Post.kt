@@ -14,6 +14,7 @@ data class Post(
         val id: Long = 0,
         val title: String = "",
         val content: String = "",
+
         @Column(name = "user_iduser")
         val userId: Long = 0,
 
