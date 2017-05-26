@@ -14,13 +14,11 @@ data class Tag(
         val id: Long = 0,
         val title: String = "",
 
-        @Transient
-        @OneToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+        @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
         @JsonBackReference("tagPosts")
         val posts: List<Post>? = null,
 
-        @Transient
-        @OneToMany(mappedBy = "commentTags", fetch = FetchType.EAGER)
+        @OneToMany(mappedBy = "commentTags", fetch = FetchType.LAZY)
         @JsonBackReference("tagComments")
         val comments: List<Comment>? = null
 ) {

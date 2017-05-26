@@ -14,9 +14,9 @@ data class Role(
         val title: String = "",
         val description: String = "",
 
-        @OneToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-        @JsonBackReference("roleUser")
-        val users: List<User> = emptyList()
+        @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+        @JsonBackReference("roleUsers")
+        val users: List<User>? = null
 ) {
     override fun toString(): String {
         return "Role(id=$id, title='$title', description='$description')"

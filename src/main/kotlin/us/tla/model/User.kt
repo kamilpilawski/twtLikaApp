@@ -15,7 +15,7 @@ data class User(
         val email: String = "",
         val password: String = "",
 
-        @OneToMany(fetch = FetchType.LAZY)
+        @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_role",
                 joinColumns = arrayOf(JoinColumn(name = "user_iduser", referencedColumnName = "iduser")),
                 inverseJoinColumns = arrayOf(JoinColumn(name = "role_idrole", referencedColumnName = "idrole")))
