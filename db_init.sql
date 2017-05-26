@@ -217,7 +217,7 @@ DEFAULT CHARACTER SET = utf8;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin'),(2,'mod','mod'),(3,'user','user');
+INSERT INTO `user` VALUES (1,'admin','admin'),(2,'mod','mod'),(3,'user@email.com','user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
