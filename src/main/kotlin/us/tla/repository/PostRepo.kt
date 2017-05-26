@@ -12,7 +12,7 @@ interface PostRepo : CrudRepository<Post, Long> {
 
     fun findByTitle(title: String): Optional<List<Post>>
 
-    fun findByPostTagsTitle(title: String): Optional<List<Post>>
+    fun findByTagsTitle(title: String): Optional<List<Post>>
 
-    fun findByPostTagsId(id: Long): Optional<List<Post>>
+    fun findByTagsId(id: Long): Optional<List<Post>>
 }

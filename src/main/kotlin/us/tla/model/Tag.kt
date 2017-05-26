@@ -1,6 +1,7 @@
 package us.tla.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 /**
@@ -14,12 +15,12 @@ data class Tag(
         val id: Long = 0,
         val title: String = "",
 
-        @OneToMany(mappedBy = "postTags", fetch = FetchType.LAZY)
-//        @JsonBackReference
+        @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+        @JsonManagedReference("tagPosts")
         val posts: List<Post> = emptyList(),
 
-        @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-//        @JsonBackReference
+        @OneToMany(mappedBy = "commentTags", fetch = FetchType.LAZY)
+        @JsonManagedReference("tagComments")
         val comments: List<Comment> = emptyList()
 ) {
     override fun toString(): String {

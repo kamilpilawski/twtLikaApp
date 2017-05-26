@@ -55,7 +55,7 @@ class CommentController {
     @GetMapping("tag/title/{title}")
     fun findByTagTitle(@PathVariable title: String): ResponseEntity<List<Comment>> {
         logger.info { "find post by user id: $title" }
-        val comments = commentRepo.findByTagsTitle(title)
+        val comments = commentRepo.findByCommentTagsTitle(title)
         logger.info { "Result: ${comments.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(
@@ -67,7 +67,7 @@ class CommentController {
     @GetMapping("tag/{id}")
     fun findByTagId(@PathVariable id: Long): ResponseEntity<List<Comment>> {
         logger.info { "find post by user id: $id" }
-        val comments = commentRepo.findByTagsId(id)
+        val comments = commentRepo.findByCommentTagsId(id)
         logger.info { "Result: ${comments.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(

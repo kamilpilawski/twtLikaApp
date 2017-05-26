@@ -10,6 +10,6 @@ import java.util.*
 interface CommentRepo : CrudRepository<Comment, Long> {
     fun findAllByUserId(userId: Long): Optional<List<Comment>>
     fun findAllByPostId(postId: Long): Optional<List<Comment>>
-    fun findByTagsTitle(title: String): Optional<List<Comment>>
-    fun findByTagsId(id: Long): Optional<List<Comment>>
+    fun findByCommentTagsTitle(title: String): Optional<List<Comment>>
+    fun findByCommentTagsId(id: Long): Optional<List<Comment>>
 }

@@ -69,7 +69,7 @@ class PostController {
     @GetMapping("tag/title/{title}")
     fun findByTagTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $title" }
-        val post = postRepo.findByPostTagsTitle(title)
+        val post = postRepo.findByTagsTitle(title)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(
@@ -80,8 +80,8 @@ class PostController {
 
     @GetMapping("tag/{id}")
     fun findByTagId(@PathVariable id: Long): ResponseEntity<List<Post>> {
-        logger.info { "find post by user id: $id" }
-        val post = postRepo.findByPostTagsId(id)
+        logger.info { "find post by tag id: $id" }
+        val post = postRepo.findByTagsId(id)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
         return ResponseEntity(
