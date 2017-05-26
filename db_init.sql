@@ -171,17 +171,17 @@ CREATE TABLE IF NOT EXISTS `twt`.`tag_relation` (
   CONSTRAINT `fk_tag_relation_tag1`
     FOREIGN KEY (`tag_idtag`)
     REFERENCES `twt`.`tag` (`idtag`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tag_relation_post1`
     FOREIGN KEY (`post_idpost`)
     REFERENCES `twt`.`post` (`idpost`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tag_relation_comment1`
     FOREIGN KEY (`comment_idcomment`)
     REFERENCES `twt`.`comment` (`idcomment`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
