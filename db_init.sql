@@ -202,22 +202,22 @@ CREATE TABLE IF NOT EXISTS `twt`.`user_role` (
   CONSTRAINT `fk_user_role_user1`
     FOREIGN KEY (`user_iduser`)
     REFERENCES `twt`.`user` (`iduser`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_role_role1`
     FOREIGN KEY (`role_idrole`)
     REFERENCES `twt`.`role` (`idrole`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8;
 
 
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin'),(2,'mod','mod'),(3,'user@email.com','user');
+INSERT INTO `user` VALUES (1,'admin','admin'),(2,'mod','mod'),(3,'user@email.com','user'),(3,'adam@email.com','adam'),(3,'kamil@email.com','kamil');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +242,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,1,1),(2,2,2),(3,3,3);
+INSERT INTO `user_role` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,3),(5,5,3);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 

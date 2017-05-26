@@ -1,6 +1,5 @@
 package us.tla.model
 
-import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 /**

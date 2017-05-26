@@ -1,7 +1,5 @@
 package us.tla.model
 
-import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 /**
@@ -23,7 +21,6 @@ data class Comment(
         @JoinTable(name = "tag_relation",
                 joinColumns = arrayOf(JoinColumn(name = "comment_idcomment", referencedColumnName = "idcomment")),
                 inverseJoinColumns = arrayOf(JoinColumn(name = "tag_idtag", referencedColumnName = "idtag")))
-       @JsonBackReference("tagComments")
         val commentTags: MutableList<Tag>? = null
 
 ) {

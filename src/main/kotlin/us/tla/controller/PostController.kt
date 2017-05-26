@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.Post
+import us.tla.model.Tag
 import us.tla.model.User
 import us.tla.repository.PostRepo
 
@@ -41,6 +42,7 @@ class PostController {
         val post = postRepo.findAllByUserId(userId)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
+        //todo fixme Json nie zwraca TAGOW a powinein bo wrcaja z BD.
         return ResponseEntity(
                 post.orElse(emptyList()),
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
