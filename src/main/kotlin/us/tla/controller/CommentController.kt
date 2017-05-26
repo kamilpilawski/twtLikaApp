@@ -21,6 +21,13 @@ class CommentController {
     @Autowired
     lateinit var commentRepo: CommentRepo
 
+    @PostMapping("save")
+    fun save(@RequestBody comment: Comment): ResponseEntity<Comment> {
+        logger.info { "add Coment: $comment" }
+        return ResponseEntity(commentRepo.save(comment), HttpStatus.OK)
+    }
+
+
     @DeleteMapping("delete")
     fun delete(@RequestParam commentId: Long): ResponseEntity<User> {
         logger.info { "destroy comment: $commentId" }
