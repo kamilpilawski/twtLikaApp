@@ -14,7 +14,7 @@ data class Role(
         val title: String = "",
         val description: String = "",
 
-        @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "roles", fetch = FetchType.EAGER)
         @JsonBackReference
         val users: List<User> = emptyList()
 ) {

@@ -24,8 +24,7 @@ class UserController {
     @PostMapping("save")
     fun save(@RequestBody user: User): ResponseEntity<User> {
         logger.info { "addUser: $user" }
-        val savedUser = userRepo.save(user)
-        return ResponseEntity(savedUser, HttpStatus.OK)
+        return ResponseEntity(userRepo.save(user), HttpStatus.OK)
     }
 
     @PutMapping("edit")

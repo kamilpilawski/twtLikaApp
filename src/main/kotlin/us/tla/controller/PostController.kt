@@ -42,7 +42,6 @@ class PostController {
         val post = postRepo.findAllByUserId(userId)
         logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
-        //todo fixme Json nie zwraca TAGOW a powinein bo wrcaja z BD.
         return ResponseEntity(
                 post.orElse(emptyList()),
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
