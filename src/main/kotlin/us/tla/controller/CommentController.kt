@@ -14,6 +14,7 @@ import us.tla.repository.CommentRepo
  */
 @RestController
 @RequestMapping("api/comment")
+@CrossOrigin(origins = arrayOf("http://localhost:8081"))
 class CommentController {
 
     companion object : KLogging()

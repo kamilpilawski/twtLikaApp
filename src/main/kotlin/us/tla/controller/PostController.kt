@@ -15,6 +15,7 @@ import us.tla.repository.PostRepo
  */
 @RestController
 @RequestMapping("api/post")
+@CrossOrigin(origins = arrayOf("http://localhost:8081"))
 class PostController {
 
     companion object : KLogging()

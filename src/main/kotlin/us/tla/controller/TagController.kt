@@ -19,6 +19,7 @@ import us.tla.repository.TagRepo
  */
 @RestController
 @RequestMapping("api/tag")
+@CrossOrigin(origins = arrayOf("http://localhost:8081"))
 class TagController {
 
     companion object : KLogging()
