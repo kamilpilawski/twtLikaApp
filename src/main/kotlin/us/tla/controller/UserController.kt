@@ -14,7 +14,7 @@ import us.tla.repository.UserRepo
  */
 @RestController
 @RequestMapping("api/user")
-@CrossOrigin(origins = arrayOf("http://localhost:8081"))
+@CrossOrigin(origins = arrayOf("*"))
 class UserController {
 
     companion object : KLogging()

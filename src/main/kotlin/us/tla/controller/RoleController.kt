@@ -16,7 +16,7 @@ import us.tla.repository.RoleRepo
  */
 @RestController
 @RequestMapping("api/role")
-@CrossOrigin(origins = arrayOf("http://localhost:8081"))
+@CrossOrigin(origins = arrayOf("*"))
 class RoleController {
 
     companion object : KLogging()

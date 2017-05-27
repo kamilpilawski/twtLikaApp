@@ -17,7 +17,7 @@ import java.util.logging.Logger
  */
 @RestController()
 @RequestMapping("api")
-@CrossOrigin(origins = arrayOf("http://localhost:8081"))
+@CrossOrigin(origins = arrayOf("*"))
 class Controller {
 
     private val logger = LoggerFactory.getLogger(Controller::class.java)
