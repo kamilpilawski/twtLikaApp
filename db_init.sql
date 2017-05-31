@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `twt`.`user` (
   `iduser` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(250) NOT NULL,
   `password` VARCHAR(500) NOT NULL,
+  `enabled` INT(2) NOT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB
@@ -217,7 +218,7 @@ DEFAULT CHARACTER SET = utf8;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin'),(2,'mod','mod'),(3,'user@email.com','user'),(4,'adam@email.com','adam'),(5,'kamil@email.com','kamil');
+INSERT INTO `user` VALUES (1,'admin','admin',1),(2,'mod','mod',1),(3,'user@email.com','user',1),(4,'adam@email.com','adam',1),(5,'kamil@email.com','kamil',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
