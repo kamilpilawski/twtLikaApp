@@ -9,6 +9,7 @@ import us.tla.model.Post
 import us.tla.model.Tag
 import us.tla.model.User
 import us.tla.repository.PostRepo
+import javax.validation.Valid
 
 /**
  * Created by Kamil on 24.05.2017.
@@ -24,7 +25,7 @@ class PostController {
     lateinit var postRepo: PostRepo
 
     @PostMapping("save")
-    fun save(@RequestBody post: Post): ResponseEntity<Post> {
+    fun save(@RequestBody @Valid post: Post): ResponseEntity<Post> {
         logger.info { "addPost: $post" }
         val savedPost = postRepo.save(post)
         return ResponseEntity(savedPost, HttpStatus.OK)
