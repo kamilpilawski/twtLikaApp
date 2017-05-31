@@ -29,7 +29,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
+                .antMatchers("/", "/api/post/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
