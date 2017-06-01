@@ -78,10 +78,9 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `twt`.`follow` ;
 
 CREATE TABLE IF NOT EXISTS `twt`.`follow` (
-  `idfollow` INT(11) NOT NULL AUTO_INCREMENT,
   `followed_userid` INT(11) NOT NULL,
   `user_iduser` INT(11) NOT NULL,
-  PRIMARY KEY (`idfollow`),
+  PRIMARY KEY (`followed_userid`,`user_iduser`),
   INDEX `fk_follow_user_idx` (`user_iduser` ASC),
   CONSTRAINT `fk_follow_user`
     FOREIGN KEY (`user_iduser`)
@@ -98,11 +97,10 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `twt`.`like` ;
 
 CREATE TABLE IF NOT EXISTS `twt`.`like` (
-  `idlike` INT(11) NOT NULL AUTO_INCREMENT,
   `comment_idcomment` INT(11) NULL DEFAULT NULL,
   `post_idpost` INT(11) NULL DEFAULT NULL,
   `user_iduser` INT(11) NOT NULL,
-  PRIMARY KEY (`idlike`),
+  PRIMARY KEY (`user_iduser`,`post_idpost`,`comment_idcomment`),
   INDEX `fk_like_comment1_idx` (`comment_idcomment` ASC),
   INDEX `fk_like_post1_idx` (`post_idpost` ASC),
   INDEX `fk_like_user1_idx` (`user_iduser` ASC),
@@ -164,8 +162,7 @@ CREATE TABLE IF NOT EXISTS `twt`.`tag_relation` (
   `tag_idtag` INT(11) NULL DEFAULT NULL,
   `post_idpost` INT(11) NULL DEFAULT NULL,
   `comment_idcomment` INT(11) NULL DEFAULT NULL,
-  `tag_relationcol` INT(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`tag_relationcol`),
+  PRIMARY KEY (`tag_idtag`,`post_idpost`,`comment_idcomment`),
   INDEX `fk_tag_relation_tag1_idx` (`tag_idtag` ASC),
   INDEX `fk_tag_relation_post1_idx` (`post_idpost` ASC),
   INDEX `fk_tag_relation_comment1_idx` (`comment_idcomment` ASC),
@@ -194,10 +191,9 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `twt`.`user_role` ;
 
 CREATE TABLE IF NOT EXISTS `twt`.`user_role` (
-  `iduser_role` INT(11) NOT NULL AUTO_INCREMENT,
   `user_iduser` INT(11) NOT NULL,
   `role_idrole` INT(11) NOT NULL,
-  PRIMARY KEY (`iduser_role`),
+  PRIMARY KEY (`user_iduser`,`role_idrole`),
   INDEX `fk_user_role_user1_idx` (`user_iduser` ASC),
   INDEX `fk_user_role_role1_idx` (`role_idrole` ASC),
   CONSTRAINT `fk_user_role_user1`
