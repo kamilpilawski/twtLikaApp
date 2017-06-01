@@ -127,13 +127,13 @@ CREATE TABLE IF NOT EXISTS `twt`.`like_comment` (
   `comment_idcomment` INT(11) NOT NULL,
   PRIMARY KEY (`user_iduser`, `comment_idcomment`),
   INDEX `fk_like_comment1_idx` (`comment_idcomment` ASC),
-  INDEX `fk_like_user1_idx` (`user_iduser` ASC),
+  INDEX `fk_like_user2_idx` (`user_iduser` ASC),
   CONSTRAINT `fk_like_comment1`
   FOREIGN KEY (`comment_idcomment`)
   REFERENCES `twt`.`comment` (`idcomment`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_like_user1`
+  CONSTRAINT `fk_like_user2`
   FOREIGN KEY (`user_iduser`)
   REFERENCES `twt`.`user` (`iduser`)
     ON DELETE NO ACTION
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `twt`.`tag_comment` (
   REFERENCES `twt`.`tag` (`idtag`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_relation_comment1_idx`
+  CONSTRAINT `fk_tag_relation_comment1`
   FOREIGN KEY (`comment_idcomment`)
   REFERENCES `twt`.`comment` (`idcomment`)
     ON DELETE CASCADE
