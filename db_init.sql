@@ -3,247 +3,295 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
+SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
+SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Schema twt
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `twt` DEFAULT CHARACTER SET utf8 ;
-USE `twt` ;
+CREATE SCHEMA IF NOT EXISTS `twt`
+  DEFAULT CHARACTER SET utf8;
+USE `twt`;
 
 -- -----------------------------------------------------
 -- Table `twt`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`user` ;
+DROP TABLE IF EXISTS `twt`.`user`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`user` (
-  `iduser` INT(11) NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(250) NOT NULL,
+  `iduser`   INT(11)      NOT NULL AUTO_INCREMENT,
+  `email`    VARCHAR(250) NOT NULL,
   `password` VARCHAR(500) NOT NULL,
-  `enabled` INT(2) NOT NULL,
+  `enabled`  INT(2)       NOT NULL,
   PRIMARY KEY (`iduser`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8;
-
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 4
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `twt`.`post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`post` ;
+DROP TABLE IF EXISTS `twt`.`post`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`post` (
-  `idpost` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(250) NULL DEFAULT NULL,
-  `content` VARCHAR(250) NULL DEFAULT NULL,
-  `user_iduser` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`idpost`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
+  `idpost`      INT(11)      NOT NULL AUTO_INCREMENT,
+  `title`       VARCHAR(250) NULL     DEFAULT NULL,
+  `content`     VARCHAR(250) NULL     DEFAULT NULL,
+  `user_iduser` INT(11)      NULL     DEFAULT NULL,
+  PRIMARY KEY (`idpost`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `twt`.`comment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`comment` ;
+DROP TABLE IF EXISTS `twt`.`comment`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`comment` (
-  `idcomment` INT(11) NOT NULL AUTO_INCREMENT,
-  `content` VARCHAR(250) NULL DEFAULT NULL,
-  `user_iduser` INT(11) NULL DEFAULT NULL,
-  `post_idpost` INT(11) NULL DEFAULT NULL,
+  `idcomment`   INT(11)      NOT NULL AUTO_INCREMENT,
+  `content`     VARCHAR(250) NULL     DEFAULT NULL,
+  `user_iduser` INT(11)      NULL     DEFAULT NULL,
+  `post_idpost` INT(11)      NULL     DEFAULT NULL,
   PRIMARY KEY (`idcomment`),
   INDEX `fk_comment_user1_idx` (`user_iduser` ASC),
   INDEX `fk_comment_post1_idx` (`post_idpost` ASC),
   CONSTRAINT `fk_comment_user1`
-    FOREIGN KEY (`user_iduser`)
-    REFERENCES `twt`.`user` (`iduser`)
+  FOREIGN KEY (`user_iduser`)
+  REFERENCES `twt`.`user` (`iduser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_comment_post1`
-    FOREIGN KEY (`post_idpost`)
-    REFERENCES `twt`.`post` (`idpost`)
+  FOREIGN KEY (`post_idpost`)
+  REFERENCES `twt`.`post` (`idpost`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `twt`.`follow`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`follow` ;
+DROP TABLE IF EXISTS `twt`.`follow`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`follow` (
   `followed_userid` INT(11) NOT NULL,
-  `user_iduser` INT(11) NOT NULL,
-  PRIMARY KEY (`followed_userid`,`user_iduser`),
+  `user_iduser`     INT(11) NOT NULL,
+  PRIMARY KEY (`followed_userid`, `user_iduser`),
   INDEX `fk_follow_user_idx` (`user_iduser` ASC),
   CONSTRAINT `fk_follow_user`
-    FOREIGN KEY (`user_iduser`)
-    REFERENCES `twt`.`user` (`iduser`)
+  FOREIGN KEY (`user_iduser`)
+  REFERENCES `twt`.`user` (`iduser`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
--- Table `twt`.`like`
+-- Table `twt`.`like_post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`like` ;
+DROP TABLE IF EXISTS `twt`.`like_post`;
 
-CREATE TABLE IF NOT EXISTS `twt`.`like` (
-  `comment_idcomment` INT(11) NULL DEFAULT NULL,
-  `post_idpost` INT(11) NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `twt`.`like_post` (
+  `post_idpost` INT(11) NOT NULL,
   `user_iduser` INT(11) NOT NULL,
-  PRIMARY KEY (`user_iduser`,`post_idpost`,`comment_idcomment`),
-  INDEX `fk_like_comment1_idx` (`comment_idcomment` ASC),
+  PRIMARY KEY (`user_iduser`, `post_idpost`),
   INDEX `fk_like_post1_idx` (`post_idpost` ASC),
   INDEX `fk_like_user1_idx` (`user_iduser` ASC),
-  CONSTRAINT `fk_like_comment1`
-    FOREIGN KEY (`comment_idcomment`)
-    REFERENCES `twt`.`comment` (`idcomment`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_like_post1`
-    FOREIGN KEY (`post_idpost`)
-    REFERENCES `twt`.`post` (`idpost`)
+  FOREIGN KEY (`post_idpost`)
+  REFERENCES `twt`.`post` (`idpost`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_like_user1`
-    FOREIGN KEY (`user_iduser`)
-    REFERENCES `twt`.`user` (`iduser`)
+  FOREIGN KEY (`user_iduser`)
+  REFERENCES `twt`.`user` (`iduser`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `twt`.`like_comment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `twt`.`like_comment`;
+
+CREATE TABLE IF NOT EXISTS `twt`.`like_comment` (
+  `user_iduser`       INT(11) NOT NULL,
+  `comment_idcomment` INT(11) NOT NULL,
+  PRIMARY KEY (`user_iduser`, `comment_idcomment`),
+  INDEX `fk_like_comment1_idx` (`comment_idcomment` ASC),
+  INDEX `fk_like_user1_idx` (`user_iduser` ASC),
+  CONSTRAINT `fk_like_comment1`
+  FOREIGN KEY (`comment_idcomment`)
+  REFERENCES `twt`.`comment` (`idcomment`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_like_user1`
+  FOREIGN KEY (`user_iduser`)
+  REFERENCES `twt`.`user` (`iduser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `twt`.`role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`role` ;
+DROP TABLE IF EXISTS `twt`.`role`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`role` (
-  `idrole` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(250) NULL DEFAULT NULL,
-  `description` VARCHAR(500) NULL DEFAULT NULL,
+  `idrole`      INT(11)      NOT NULL AUTO_INCREMENT,
+  `title`       VARCHAR(250) NULL     DEFAULT NULL,
+  `description` VARCHAR(500) NULL     DEFAULT NULL,
   PRIMARY KEY (`idrole`),
-  UNIQUE INDEX `title_UNIQUE` (`title` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8;
-
+  UNIQUE INDEX `title_UNIQUE` (`title` ASC)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 4
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `twt`.`tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`tag` ;
+DROP TABLE IF EXISTS `twt`.`tag`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`tag` (
-  `idtag` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(250) NULL DEFAULT NULL,
-  PRIMARY KEY (`idtag`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8;
-
+  `idtag` INT(11)      NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(250) NULL     DEFAULT NULL,
+  PRIMARY KEY (`idtag`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 5
+  DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
--- Table `twt`.`tag_relation`
+-- Table `twt`.`tag_post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`tag_relation` ;
+DROP TABLE IF EXISTS `twt`.`tag_post`;
 
-CREATE TABLE IF NOT EXISTS `twt`.`tag_relation` (
-  `tag_idtag` INT(11) NULL DEFAULT NULL,
-  `post_idpost` INT(11) NULL DEFAULT NULL,
-  `comment_idcomment` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`tag_idtag`,`post_idpost`,`comment_idcomment`),
+CREATE TABLE IF NOT EXISTS `twt`.`tag_post` (
+  `tag_idtag`   INT(11) NOT NULL,
+  `post_idpost` INT(11) NOT NULL,
+  PRIMARY KEY (`tag_idtag`, `post_idpost`),
   INDEX `fk_tag_relation_tag1_idx` (`tag_idtag` ASC),
   INDEX `fk_tag_relation_post1_idx` (`post_idpost` ASC),
-  INDEX `fk_tag_relation_comment1_idx` (`comment_idcomment` ASC),
   CONSTRAINT `fk_tag_relation_tag1`
-    FOREIGN KEY (`tag_idtag`)
-    REFERENCES `twt`.`tag` (`idtag`)
+  FOREIGN KEY (`tag_idtag`)
+  REFERENCES `twt`.`tag` (`idtag`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tag_relation_post1`
-    FOREIGN KEY (`post_idpost`)
-    REFERENCES `twt`.`post` (`idpost`)
+  FOREIGN KEY (`post_idpost`)
+  REFERENCES `twt`.`post` (`idpost`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `twt`.`tag_comment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `twt`.`tag_comment`;
+
+CREATE TABLE IF NOT EXISTS `twt`.`tag_comment` (
+  `tag_idtag`   INT(11) NOT NULL,
+  `comment_idcomment` INT(11) NOT NULL,
+  PRIMARY KEY (`tag_idtag`, `comment_idcomment`),
+  INDEX `fk_tag_relation_tag1_idx` (`tag_idtag` ASC),
+  INDEX `fk_tag_relation_comment1_idx` (`comment_idcomment` ASC),
+  CONSTRAINT `fk_tag_relation_tag1`
+  FOREIGN KEY (`tag_idtag`)
+  REFERENCES `twt`.`tag` (`idtag`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_relation_comment1`
-    FOREIGN KEY (`comment_idcomment`)
-    REFERENCES `twt`.`comment` (`idcomment`)
+  CONSTRAINT `fk_tag_relation_comment1_idx`
+  FOREIGN KEY (`comment_idcomment`)
+  REFERENCES `twt`.`comment` (`idcomment`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
 -- Table `twt`.`user_role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`user_role` ;
+DROP TABLE IF EXISTS `twt`.`user_role`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`user_role` (
   `user_iduser` INT(11) NOT NULL,
   `role_idrole` INT(11) NOT NULL,
-  PRIMARY KEY (`user_iduser`,`role_idrole`),
+  PRIMARY KEY (`user_iduser`, `role_idrole`),
   INDEX `fk_user_role_user1_idx` (`user_iduser` ASC),
   INDEX `fk_user_role_role1_idx` (`role_idrole` ASC),
   CONSTRAINT `fk_user_role_user1`
-    FOREIGN KEY (`user_iduser`)
-    REFERENCES `twt`.`user` (`iduser`)
+  FOREIGN KEY (`user_iduser`)
+  REFERENCES `twt`.`user` (`iduser`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_role_role1`
-    FOREIGN KEY (`role_idrole`)
-    REFERENCES `twt`.`role` (`idrole`)
+  FOREIGN KEY (`role_idrole`)
+  REFERENCES `twt`.`role` (`idrole`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8;
-
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 6
+  DEFAULT CHARACTER SET = utf8;
 
 
 LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin',1),(2,'mod','mod',1),(3,'user@email.com','user',1),(4,'adam@email.com','adam',1),(5,'kamil@email.com','kamil',1);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+/*!40000 ALTER TABLE `user`
+  DISABLE KEYS */;
+INSERT INTO `user` VALUES (1, 'admin', 'admin', 1), (2, 'mod', 'mod', 1), (3, 'user@email.com', 'user', 1),
+  (4, 'adam@email.com', 'adam', 1), (5, 'kamil@email.com', 'kamil', 1);
+/*!40000 ALTER TABLE `user`
+  ENABLE KEYS */;
 UNLOCK TABLES;
 
 LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'admin','administrator'),(2,'mod','moderator'),(3,'user','default user');
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `role`
+  DISABLE KEYS */;
+INSERT INTO `role` VALUES (1, 'admin', 'administrator'), (2, 'mod', 'moderator'), (3, 'user', 'default user');
+/*!40000 ALTER TABLE `role`
+  ENABLE KEYS */;
 UNLOCK TABLES;
 
 
 LOCK TABLES `tag` WRITE;
-/*!40000 ALTER TABLE `tag` DISABLE KEYS */;
-INSERT INTO `tag` VALUES (1,'katowice'),(2,'sosnowiec'),(3,'haszTag'),(4,'fajnaApka');
-/*!40000 ALTER TABLE `tag` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tag`
+  DISABLE KEYS */;
+INSERT INTO `tag` VALUES (1, 'katowice'), (2, 'sosnowiec'), (3, 'haszTag'), (4, 'fajnaApka');
+/*!40000 ALTER TABLE `tag`
+  ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
+SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
+SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 LOCK TABLES `user_role` WRITE;
-/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,1),(2,2),(3,3),(4,3),(5,3);
-/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `user_role`
+  DISABLE KEYS */;
+INSERT INTO `user_role` VALUES (1, 1), (2, 2), (3, 3), (4, 3), (5, 3);
+/*!40000 ALTER TABLE `user_role`
+  ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET SQL_MODE = @OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
