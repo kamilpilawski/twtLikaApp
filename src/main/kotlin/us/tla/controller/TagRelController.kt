@@ -33,6 +33,18 @@ class TagRelController {
         }
     }
 
+    @DeleteMapping("remove/comment")
+    fun removeHashComment(@RequestParam commentId: Long, @RequestParam tagId: Long): HttpStatus {
+        logger.info { "remove hashtag by post Id: $commentId, tagId: $tagId" }
+        val hash = tagRelationRepo.findByCommentIdcommentAndTagIdtag(commentId, tagId)
+        if (null != hash) {
+            tagRelationRepo.delete(hash)
+            return HttpStatus.OK
+        } else {
+            return HttpStatus.CONFLICT
+        }
+    }
+
     @PostMapping("add")
     fun addHash(@RequestBody @Valid tagRel: TagRelation): ResponseEntity<TagRelation> {
         logger.info { "add hash $tagRel" }

@@ -9,4 +9,5 @@ import us.tla.model.TagRelation
 interface TagRelationRepo : CrudRepository<TagRelation, Long> {
 
     fun findByPostIdpostAndTagIdtag(postId: Long, tagId: Long): TagRelation
+    fun findByCommentIdcommentAndTagIdtag(commentId: Long, tagId: Long): TagRelation
 }
