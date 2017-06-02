@@ -12,6 +12,7 @@ data class Tag(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "idtag")
         val id: Long = 0,
+
         val title: String = "",
 
         @OneToMany(mappedBy = "tags", fetch = FetchType.LAZY)

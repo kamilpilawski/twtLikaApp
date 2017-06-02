@@ -11,9 +11,13 @@ data class User(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "iduser")
         val id: Long = 0L,
-        @Column(name = "email", unique = true)
+
+        @Column(unique = true)
         val email: String = "",
+
         val password: String = "",
+
+        val enabled: Int = 0,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_role",

@@ -1,5 +1,6 @@
 package us.tla.model
 
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -14,14 +15,23 @@ data class Post(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "idpost")
         val id: Long = 0,
+
+        @Column(name = "user_iduser")
+        val userId: Long = 0,
+
         @NotNull
         @Size(min = 2, max = 50)
         val title: String = "",
+
         @Size(min = 2, max = 350)
         @NotNull
         val content: String = "",
-        @Column(name = "user_iduser")
-        val userId: Long = 0,
+
+        @Column(name = "create_date")
+        val createDate: Date?,
+
+        @Column(name = "edit_date")
+        val editDate: Date?,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "tag_relation",

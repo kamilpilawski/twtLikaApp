@@ -1,5 +1,6 @@
 package us.tla.model
 
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -11,11 +12,20 @@ data class Comment(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "idcomment")
         val id: Long = 0,
+
         val content: String = "",
+
         @Column(name = "user_iduser")
         val userId: Long = 0,
+
         @Column(name = "post_idpost")
         val postId: Long = 0,
+
+        @Column(name = "create_date")
+        val createDate: Date?,
+
+        @Column(name = "edit_date")
+        val editDate: Date?,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "tag_relation",
