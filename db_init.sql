@@ -37,12 +37,12 @@ CREATE TABLE IF NOT EXISTS `twt`.`user` (
 DROP TABLE IF EXISTS `twt`.`post`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`post` (
-  `idpost`      INT(11)      NOT NULL AUTO_INCREMENT,
-  `title`       VARCHAR(250) NULL     DEFAULT NULL,
-  `content`     VARCHAR(250) NULL     DEFAULT NULL,
-  `create_date` DATETIME     DEFAULT CURRENT_TIMESTAMP,
-  `edit_date`   DATETIME     NULL,
-  `user_iduser` INT(11)      NULL     DEFAULT NULL,
+  `idpost`      INT(11)      NOT NULL         AUTO_INCREMENT,
+  `title`       VARCHAR(250) NULL             DEFAULT NULL,
+  `content`     VARCHAR(250) NULL             DEFAULT NULL,
+  `create_date` TIMESTAMP    NOT NULL         DEFAULT CURRENT_TIMESTAMP,
+  `edit_date`   DATETIME,
+  `user_iduser` INT(11)      NULL             DEFAULT NULL,
   PRIMARY KEY (`idpost`)
 )
   ENGINE = InnoDB
@@ -54,12 +54,12 @@ CREATE TABLE IF NOT EXISTS `twt`.`post` (
 DROP TABLE IF EXISTS `twt`.`comment`;
 
 CREATE TABLE IF NOT EXISTS `twt`.`comment` (
-  `idcomment`   INT(11)      NOT NULL AUTO_INCREMENT,
-  `content`     VARCHAR(250) NULL     DEFAULT NULL,
-  `user_iduser` INT(11)      NULL     DEFAULT NULL,
-  `create_date` DATETIME     DEFAULT CURRENT_TIMESTAMP,
-  `edit_date`   DATETIME     NULL,
-  `post_idpost` INT(11)      NULL     DEFAULT NULL,
+  `idcomment`   INT(11)      NOT NULL         AUTO_INCREMENT,
+  `content`     VARCHAR(250) NULL             DEFAULT NULL,
+  `user_iduser` INT(11)      NULL             DEFAULT NULL,
+  `create_date` TIMESTAMP    NOT NULL         DEFAULT CURRENT_TIMESTAMP,
+  `edit_date`   DATETIME,
+  `post_idpost` INT(11)      NULL             DEFAULT NULL,
   PRIMARY KEY (`idcomment`),
   INDEX `fk_comment_user1_idx` (`user_iduser` ASC),
   INDEX `fk_comment_post1_idx` (`post_idpost` ASC),
