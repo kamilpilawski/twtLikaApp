@@ -29,7 +29,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/api/post/**").permitAll()
+                .antMatchers("/", "/api/post/**","/api/user/**").permitAll()//fixme usunac odblokowane endpointy
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
