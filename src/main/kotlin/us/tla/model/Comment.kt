@@ -22,10 +22,10 @@ data class Comment(
         val postId: Long = 0,
 
         @Column(name = "create_date")
-        val createDate: Date?,
+        val createDate: Date? = null,
 
         @Column(name = "edit_date")
-        val editDate: Date?,
+        val editDate: Date? = null,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "tag_relation",
