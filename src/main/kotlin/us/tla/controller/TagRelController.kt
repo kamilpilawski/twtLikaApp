@@ -48,13 +48,11 @@ class TagRelController {
     @PostMapping("add")
     fun addHash(@RequestBody @Valid tagRel: TagRelation): ResponseEntity<TagRelation> {
         logger.info { "add hash $tagRel" }
-        var response: TagRelation = TagRelation()
         try {
-            response = tagRelationRepo.save(tagRel)
-            return ResponseEntity(response, HttpStatus.OK)
+            return ResponseEntity(tagRelationRepo.save(tagRel), HttpStatus.OK)
         } catch (ex: Exception) {
             logger.info { "Exc message: ${ex.message}" }
         }
-        return ResponseEntity(response, HttpStatus.CONFLICT)
+        return ResponseEntity(TagRelation(), HttpStatus.CONFLICT)
     }
 }

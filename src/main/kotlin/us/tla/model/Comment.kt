@@ -1,5 +1,6 @@
 package us.tla.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -22,9 +23,11 @@ data class Comment(
         val postId: Long = 0,
 
         @Column(name = "create_date")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europe/Warsaw")
         val createDate: Date? = null,
 
         @Column(name = "edit_date")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europe/Warsaw")
         val editDate: Date? = null,
 
         @OneToMany(fetch = FetchType.EAGER)

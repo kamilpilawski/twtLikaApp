@@ -107,11 +107,11 @@ CREATE TABLE IF NOT EXISTS `twt`.`follow` (
   DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
--- Table `twt`.`like`
+-- Table `twt`.`likes`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `twt`.`like`;
+DROP TABLE IF EXISTS `twt`.`likes`;
 
-CREATE TABLE IF NOT EXISTS `twt`.`like` (
+CREATE TABLE IF NOT EXISTS `twt`.`likes` (
   `idlike`            INT(11) NOT NULL AUTO_INCREMENT,
   `comment_idcomment` INT(11) NULL     DEFAULT NULL,
   `post_idpost`       INT(11) NULL     DEFAULT NULL,
