@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import javax.servlet.http.HttpServletResponse
@@ -16,7 +17,6 @@ import javax.sql.DataSource
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import java.util.*
 
 
 /**
@@ -30,13 +30,17 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Qualifier("dataSource")
     lateinit var ds: DataSource
 
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers("/*.js", "/*.css", "/*.ico", "/images/*", "/fonts/*")
+    }
+
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/api/user/save").permitAll()
+                .antMatchers("/", "/api/user/save","/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

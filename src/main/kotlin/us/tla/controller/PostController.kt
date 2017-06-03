@@ -1,13 +1,11 @@
 package us.tla.controller
 
-import javafx.geometry.Pos
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.Post
-import us.tla.model.Tag
 import us.tla.model.User
 import us.tla.repository.PostRepo
 import us.tla.repository.UserRepo
