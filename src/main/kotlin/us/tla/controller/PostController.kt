@@ -44,9 +44,11 @@ class PostController {
     }
 
     @PostMapping("save")
-    fun save(@RequestBody @Valid post: Post): ResponseEntity<Post> {
+    fun save(@RequestBody @Valid post: Post, principal: Principal): ResponseEntity<Post> {
         logger.info { "addPost: $post" }
-        val savedPost = postRepo.save(post)
+        val user = userRepo.findByEmail(principal.name).get()
+
+        val savedPost = postRepo.save(post.copy(userId = user.id))
         return ResponseEntity(savedPost, HttpStatus.OK)
     }
 
