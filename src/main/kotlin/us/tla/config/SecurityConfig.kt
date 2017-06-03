@@ -85,7 +85,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
 //        configuration.allowedOrigins = Arrays.asList("https://example.com")
 //        configuration.allowedMethods = Arrays.asList("GET", "POST")
         configuration.allowCredentials = true
-        configuration.allowedOrigins = listOf("http://localhost:8080")
+        configuration.allowedOrigins = listOf("*")
         configuration.addAllowedHeader("*")
         configuration.addAllowedMethod("*")
         val source = UrlBasedCorsConfigurationSource()
