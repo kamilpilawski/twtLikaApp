@@ -36,7 +36,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()//fixme usunac odblokowane endpointy
+                .antMatchers("/", "/api/user/save").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
