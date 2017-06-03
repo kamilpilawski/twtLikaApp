@@ -17,7 +17,7 @@ data class User(
 
         val password: String = "",
 
-        val enabled: Int = 0,
+        val enabled: Int = 1,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_role",
