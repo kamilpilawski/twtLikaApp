@@ -28,8 +28,10 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/api/post/**","/api/user/**").permitAll()//fixme usunac odblokowane endpointy
+                .antMatchers("/", "/api/post/**", "/api/user/**").permitAll()//fixme usunac odblokowane endpointy
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
