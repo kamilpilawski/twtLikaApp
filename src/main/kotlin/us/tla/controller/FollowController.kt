@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.Follow
 import us.tla.model.Likes
+import us.tla.model.User
 import us.tla.repository.FollowRepo
 import us.tla.repository.UserRepo
 import java.security.Principal
@@ -64,5 +65,15 @@ class FollowController {
         } else {
             return HttpStatus.CONFLICT
         }
+    }
+
+    @GetMapping("list")
+    fun listFollow(principal: Principal): ResponseEntity<List<Follow>> {
+        val user = userRepo.findByEmail(principal.name).get()
+        val follows = followRepo.findByUserId(user.id)
+        return ResponseEntity(
+                follows.orElse(listOf(Follow())),
+                if (follows.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
     }
 }
