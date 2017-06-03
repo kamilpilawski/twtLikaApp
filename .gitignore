@@ -26,3 +26,4 @@ nbdist/
 /src/main/resources/application.properties
 /out/
 
+/src/main/resources/static/
