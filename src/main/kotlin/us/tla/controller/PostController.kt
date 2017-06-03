@@ -1,5 +1,6 @@
 package us.tla.controller
 
+import javafx.geometry.Pos
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -9,6 +10,8 @@ import us.tla.model.Post
 import us.tla.model.Tag
 import us.tla.model.User
 import us.tla.repository.PostRepo
+import us.tla.repository.UserRepo
+import java.security.Principal
 import javax.validation.Valid
 
 /**
@@ -23,6 +26,22 @@ class PostController {
 
     @Autowired
     lateinit var postRepo: PostRepo
+
+    @Autowired
+    lateinit var userRepo: UserRepo
+
+    @GetMapping("liked")
+    fun likedPosts(principal: Principal): ResponseEntity<List<Post>> {
+        logger.info { "Getting liked posts" }
+        val user = userRepo.findByEmail(principal.name).get()
+
+        val likedPosts = postRepo.findLikedPosts(user.id)
+
+        return ResponseEntity(
+                likedPosts.orElse(listOf(Post())),
+                if (likedPosts.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+        )
+    }
 
     @PostMapping("save")
     fun save(@RequestBody @Valid post: Post): ResponseEntity<Post> {
