@@ -40,7 +40,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/api/user/save","/static/**").permitAll()
+                .antMatchers("/", "/api/user/save", "/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -83,19 +83,17 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .authoritiesByUsernameQuery("select user.email as username, role.title as role from user join user_role on user.iduser = user_role.user_iduser join role on user_role.role_idrole = role.idrole where user.email= ?")
     }
 
-//    @Bean
-//    fun corsConfigurationSource(): CorsConfigurationSource {
-//        val configuration = CorsConfiguration()
-////        configuration.allowedOrigins = Arrays.asList("https://example.com")
-////        configuration.allowedMethods = Arrays.asList("GET", "POST")
-//        configuration.allowCredentials = true
-//        configuration.allowedOrigins = listOf("*")
-//        configuration.addAllowedHeader("*")
-//        configuration.addAllowedMethod("*")
-//        val source = UrlBasedCorsConfigurationSource()
-//        source.registerCorsConfiguration("/**", configuration)
-//
-//        return source
-//    }
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowCredentials = true
+        configuration.allowedOrigins = listOf("*")
+        configuration.addAllowedHeader("*")
+        configuration.addAllowedMethod("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+
+        return source
+    }
 
 }
