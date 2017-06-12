@@ -18,7 +18,6 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("api/follow")
-@CrossOrigin(origins = arrayOf("*"))
 class FollowController {
     companion object : KLogging()
 

@@ -13,7 +13,6 @@ import us.tla.repository.UserRepo
  */
 @RestController()
 @RequestMapping("api")
-@CrossOrigin(origins = arrayOf("*"))
 class Controller {
 
     private val logger = LoggerFactory.getLogger(Controller::class.java)

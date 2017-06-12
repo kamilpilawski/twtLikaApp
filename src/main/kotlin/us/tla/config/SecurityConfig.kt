@@ -1,6 +1,7 @@
 package us.tla.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -25,6 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
+
+    companion object : KLogging()
 
     @Autowired
     @Qualifier("dataSource")
@@ -53,6 +56,9 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .successHandler { req, res, auth ->
+
+                    logger.info("User ${auth.name} has logged in.")
+
                     res.status = HttpServletResponse.SC_OK
                     res.contentType = "application/json"
                     res.writer.apply {
@@ -86,10 +92,11 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowCredentials = true
         configuration.allowedOrigins = listOf("*")
-        configuration.addAllowedHeader("*")
         configuration.addAllowedMethod("*")
+        configuration.addAllowedHeader("*")
+        configuration.allowCredentials = true
+
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
 

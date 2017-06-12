@@ -16,7 +16,6 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("api/likes")
-@CrossOrigin(origins = arrayOf("*"))
 class LikesController {
     companion object : KLogging()
 

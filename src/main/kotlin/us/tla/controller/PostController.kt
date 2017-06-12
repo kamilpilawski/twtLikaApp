@@ -17,7 +17,6 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("api/post")
-@CrossOrigin(origins = arrayOf("*"))
 class PostController {
 
     companion object : KLogging()

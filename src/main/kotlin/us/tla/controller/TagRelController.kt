@@ -14,7 +14,6 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("api/hash")
-@CrossOrigin(origins = arrayOf("*"))
 class TagRelController {
     companion object : KLogging()
 
