@@ -1,17 +1,14 @@
 package us.tla.controller
 
+
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
-
-
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import us.tla.model.Tag
-import us.tla.model.User
 import us.tla.repository.TagRepo
 
 /**
@@ -29,7 +26,7 @@ class TagController {
     @GetMapping("list")
     fun list(pageable: Pageable): ResponseEntity<Page<Tag>> {
         UserController.logger.info { "list tags" }
-        val tags = tagRepo.findAll<Sort>(pageable)
+        val tags = tagRepo.findAll(pageable)
         return ResponseEntity(tags, HttpStatus.OK)
     }
 
