@@ -4,12 +4,13 @@ import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import us.tla.model.Post
 import us.tla.model.User
 import us.tla.repository.PostRepo
 import us.tla.repository.UserRepo
-import java.security.Principal
+import us.tla.service.security.CurrentUser
 import javax.validation.Valid
 
 /**
@@ -28,11 +29,12 @@ class PostController {
     lateinit var userRepo: UserRepo
 
     @GetMapping("liked")
-    fun likedPosts(principal: Principal): ResponseEntity<List<Post>> {
-        logger.info { "Getting liked posts" }
-        val user = userRepo.findByEmail(principal.name).get()
+    fun likedPosts(auth: Authentication): ResponseEntity<List<Post>> {
 
-        val likedPosts = postRepo.findLikedPosts(user.id)
+        val currentUser = auth.principal as CurrentUser
+        logger.info { "Getting liked posts by user ${currentUser.name}" }
+
+        val likedPosts = postRepo.findLikedPosts(currentUser.user.id)
 
         return ResponseEntity(
                 likedPosts.orElse(listOf(Post())),
@@ -41,11 +43,12 @@ class PostController {
     }
 
     @PostMapping("save")
-    fun save(@RequestBody @Valid post: Post, principal: Principal): ResponseEntity<Post> {
-        logger.info { "addPost: $post" }
-        val user = userRepo.findByEmail(principal.name).get()
+    fun save(@RequestBody @Valid post: Post, auth: Authentication): ResponseEntity<Post> {
+        val currentUser = auth.principal as CurrentUser
 
-        val savedPost = postRepo.save(post.copy(userId = user.id))
+        logger.info { "addPost: $post by user: ${currentUser.name}" }
+
+        val savedPost = postRepo.save(post.copy(userId = currentUser.user.id))
         return ResponseEntity(savedPost, HttpStatus.OK)
     }
 

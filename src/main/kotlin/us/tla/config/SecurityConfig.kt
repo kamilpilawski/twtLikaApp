@@ -3,21 +3,23 @@ package us.tla.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import javax.servlet.http.HttpServletResponse
-import javax.sql.DataSource
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import us.tla.service.security.CurrentUserDetailService
+import javax.servlet.http.HttpServletResponse
 
 
 /**
@@ -25,13 +27,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
  */
 @Configuration
 @EnableWebSecurity
+@ComponentScan("us.tla.service.security")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     companion object : KLogging()
 
     @Autowired
-    @Qualifier("dataSource")
-    lateinit var ds: DataSource
+    lateinit var currUserDetailService: CurrentUserDetailService
 
     override fun configure(web: WebSecurity) {
         web.ignoring().antMatchers("/*.js", "/*.css", "/*.ico", "/images/*", "/fonts/*")
@@ -83,10 +86,8 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth
-                .jdbcAuthentication()
-                .dataSource(ds)
-                .usersByUsernameQuery("select email as username, password, enabled from user where email = ?")
-                .authoritiesByUsernameQuery("select user.email as username, role.title as role from user join user_role on user.iduser = user_role.user_iduser join role on user_role.role_idrole = role.idrole where user.email= ?")
+                .userDetailsService(currUserDetailService)
+//                .passwordEncoder(BCryptPasswordEncoder())//todo zrobic haslsa BCRYPT
     }
 
     @Bean

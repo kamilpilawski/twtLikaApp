@@ -5,6 +5,7 @@ import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import us.tla.model.User
 import us.tla.repository.UserRepo
@@ -27,6 +28,7 @@ class UserController {
         return ResponseEntity(userRepo.save(user), HttpStatus.OK)
     }
 
+    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @PutMapping("edit")
     fun edit(@RequestBody user: User): ResponseEntity<User> {
         logger.info { "editUser: $user" }
@@ -34,6 +36,7 @@ class UserController {
         return ResponseEntity(savedUser, HttpStatus.OK)
     }
 
+    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @DeleteMapping("delete")
     fun delete(@RequestParam userId: Long): ResponseEntity<User> {
         logger.info { "destroyUser: $userId" }
@@ -65,6 +68,7 @@ class UserController {
         )
     }
 
+    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @GetMapping("list")
     fun list(): ResponseEntity<MutableIterable<User>> {
         logger.info { "list users" }
