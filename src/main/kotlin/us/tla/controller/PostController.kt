@@ -11,6 +11,7 @@ import us.tla.model.User
 import us.tla.repository.PostRepo
 import us.tla.repository.UserRepo
 import us.tla.service.security.CurrentUser
+import us.tla.service.security.PostService
 import javax.validation.Valid
 
 /**
@@ -28,18 +29,15 @@ class PostController {
     @Autowired
     lateinit var userRepo: UserRepo
 
+    @Autowired
+    lateinit var postService: PostService
+
     @GetMapping("liked")
     fun likedPosts(auth: Authentication): ResponseEntity<List<Post>> {
 
-        val currentUser = auth.principal as CurrentUser
-        logger.info { "Getting liked posts by user ${currentUser.name}" }
+        val likedPosts = postService.getLikedPosts(auth)
 
-        val likedPosts = postRepo.findLikedPosts(currentUser.user.id)
-
-        return ResponseEntity(
-                likedPosts.orElse(listOf(Post())),
-                if (likedPosts.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
-        )
+        return ResponseEntity(likedPosts, if (likedPosts.isEmpty()) HttpStatus.NOT_FOUND else HttpStatus.OK)
     }
 
     @PostMapping("save")

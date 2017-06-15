@@ -29,18 +29,21 @@ data class Post(
         val content: String = "",
 
         @Column(name = "create_date")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europe/Warsaw")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Warsaw")
         val createDate: Date? = null,
 
         @Column(name = "edit_date")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europe/Warsaw")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Warsaw")
         val editDate: Date? = null,
 
         @OneToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "tag_relation",
                 joinColumns = arrayOf(JoinColumn(name = "post_idpost", referencedColumnName = "idpost")),
                 inverseJoinColumns = arrayOf(JoinColumn(name = "tag_idtag", referencedColumnName = "idtag")))
-        val tags: MutableList<Tag>? = null
+        val tags: MutableList<Tag>? = null,
+
+        @Transient
+        val liked: Boolean = false
 ) {
     override fun toString(): String {
         return "Post(id=$id, title='$title', content='$content', userId=$userId)"

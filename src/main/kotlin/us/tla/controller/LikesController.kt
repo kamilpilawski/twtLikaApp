@@ -40,7 +40,7 @@ class LikesController {
 
     @DeleteMapping("remove/post")
     fun removePostLike(@RequestParam postId: Long, principal: Principal): HttpStatus {
-        logger.info { "remove likepostId:$postId" }
+        logger.info { "remove likepostId: $postId" }
         val user = userRepo.findByEmail(principal.name).get()
         val like = likesRepo.findByUserIdAndPostId(user.id, postId)
         if (null != like) {
