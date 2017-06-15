@@ -40,3 +40,4 @@ Would skip repository src/main/vuejs/
 src/test/java/
 src/test/resources/
 twtApp.log
+/src/main/vuejs/tla.iml
