@@ -10,8 +10,8 @@ import us.tla.model.Post
 import us.tla.model.User
 import us.tla.repository.PostRepo
 import us.tla.repository.UserRepo
+import us.tla.service.PostService
 import us.tla.service.security.CurrentUser
-import us.tla.service.security.PostService
 import javax.validation.Valid
 
 /**
@@ -130,5 +130,44 @@ class PostController {
                 if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
     }
+
+    @GetMapping("own")
+    fun findOwnPosts(auth: Authentication): ResponseEntity<List<Post>> {
+        logger.info { "find own posts, user: ${auth.name}" }
+        val user = userRepo.findByEmail(auth.name)
+
+        when {
+            user.isPresent -> {
+                val post = postRepo.findAllByUserId(user.get().id)
+                logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+                return ResponseEntity(
+                        post.orElse(emptyList()),
+                        if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+                )
+            }
+            else -> return ResponseEntity(emptyList(), HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @GetMapping("followed/users")
+    fun findFollowedUsersPosts(auth: Authentication): ResponseEntity<List<Post>> {
+        logger.info { "find own posts, user: ${auth.name}" }
+        val user = userRepo.findByEmail(auth.name)
+
+        when {
+            user.isPresent -> {
+                val post = postRepo.findFollowedUsersPosts(user.get().id)
+                logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+                return ResponseEntity(
+                        post.orElse(emptyList()),
+                        if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+                )
+            }
+            else -> return ResponseEntity(emptyList(), HttpStatus.NOT_FOUND)
+        }
+    }
+
 
 }

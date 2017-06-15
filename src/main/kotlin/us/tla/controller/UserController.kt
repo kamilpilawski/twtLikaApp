@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import us.tla.model.User
 import us.tla.repository.UserRepo
+import us.tla.service.FollowService
+import us.tla.service.UserService
+import us.tla.service.security.CurrentUser
 
 /**
  * Created by Kamil on 12.03.2017.
@@ -20,7 +24,14 @@ class UserController {
     companion object : KLogging()
 
     @Autowired
+    lateinit var userService: UserService
+
+    @Autowired
     lateinit var userRepo: UserRepo
+
+
+    @Autowired
+    lateinit var followService: FollowService
 
     @PostMapping("save")
     fun save(@RequestBody user: User): ResponseEntity<User> {
@@ -45,13 +56,25 @@ class UserController {
     }
 
     @GetMapping("id/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<User> {
+    fun findById(@PathVariable id: Long, auth: Authentication): ResponseEntity<User> {
         logger.info { "findUser: $id" }
+        val currUser = auth.principal as CurrentUser
+
         val user = userRepo.findById(id)
-        logger.info { "Result: ${user.orElse(User())}" }
+
+        val result = when {
+            user.isPresent -> {
+                user.get().copy(followed = followService.isFollowed(currUser.user.id, id))
+            }
+            else -> {
+                User()
+            }
+        }
+
+        logger.info { "Result: $result" }
 
         return ResponseEntity(
-                user.orElse(User()),
+                result,
                 if (user.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
     }
@@ -85,6 +108,16 @@ class UserController {
                 users.orElse(emptyList()),
                 if (users.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
+    }
+
+    @GetMapping("list/followed")
+    fun listFollowed(auth: Authentication): ResponseEntity<List<User>> {
+        logger.info { "list followed users" }
+        val currUser = auth.principal as CurrentUser
+
+        val users = userService.findFollowed(currUser.user.id)
+
+        return ResponseEntity(users, if (users.isNotEmpty()) HttpStatus.OK else HttpStatus.NOT_FOUND)
     }
 
 

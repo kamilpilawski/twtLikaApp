@@ -20,4 +20,7 @@ interface PostRepo : CrudRepository<Post, Long> {
     @Query("SELECT * FROM post where post.idpost in (SELECT likes.post_idpost FROM likes WHERE likes.user_iduser = ?1) order by post.create_date desc", nativeQuery = true)
     fun findLikedPosts(userId: Long): Optional<List<Post>>
 
+    @Query("SELECT * FROM post where post.user_iduser in (SELECT follow.followed_userid FROM follow WHERE follow.user_iduser = ?1) order by post.create_date desc", nativeQuery = true)
+    fun findFollowedUsersPosts(userId: Long): Optional<List<Post>>
+
 }
