@@ -68,6 +68,25 @@ class PostController {
         )
     }
 
+    @PostMapping("user/email")
+    fun findByUserEmail(@RequestParam email: String): ResponseEntity<List<Post>> {
+        logger.info { "find post by user emamil: $email" }
+        val user = userRepo.findByEmail(email)
+
+        when {
+            user.isPresent -> {
+                val post = postRepo.findAllByUserId(user.get().id)
+                logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+
+                return ResponseEntity(
+                        post.orElse(emptyList()),
+                        if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+                )
+            }
+            else -> return ResponseEntity(emptyList(), HttpStatus.NOT_FOUND)
+        }
+    }
+
     @DeleteMapping("delete")
     fun delete(@RequestParam postId: Long): ResponseEntity<User> {
         logger.info { "destroy post: $postId" }

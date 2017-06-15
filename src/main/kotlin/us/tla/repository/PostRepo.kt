@@ -17,6 +17,7 @@ interface PostRepo : CrudRepository<Post, Long> {
 
     fun findByTagsId(id: Long): Optional<List<Post>>
 
-    @Query("SELECT * FROM post where post.idpost in (SELECT likes.post_idpost FROM likes WHERE likes.user_iduser = ?1)", nativeQuery = true)
+    @Query("SELECT * FROM post where post.idpost in (SELECT likes.post_idpost FROM likes WHERE likes.user_iduser = ?1) order by post.create_date desc", nativeQuery = true)
     fun findLikedPosts(userId: Long): Optional<List<Post>>
+
 }
