@@ -28,7 +28,7 @@ class CommentController {
         return ResponseEntity(commentRepo.save(comment), HttpStatus.OK)
     }
 
-    @PreAuthorize("hasAnyAuthority('admin, mod')")
+//    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @DeleteMapping("delete")
     fun delete(@RequestParam commentId: Long): ResponseEntity<User> {
         logger.info { "destroy comment: $commentId" }

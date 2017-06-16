@@ -94,7 +94,7 @@ class PostController {
             else -> return ResponseEntity(emptyList(), HttpStatus.NOT_FOUND)
         }
     }
-    @PreAuthorize("hasAnyAuthority('admin, mod')")
+//    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @DeleteMapping("delete")
     fun delete(@RequestParam postId: Long): ResponseEntity<User> {
         logger.info { "destroy post: $postId" }

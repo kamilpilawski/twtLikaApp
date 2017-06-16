@@ -39,7 +39,7 @@ class UserController {
         return ResponseEntity(userRepo.save(user), HttpStatus.OK)
     }
 
-    @PreAuthorize("hasAnyAuthority('admin, mod')")
+//    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @PutMapping("edit")
     fun edit(@RequestBody user: User): ResponseEntity<User> {
         logger.info { "editUser: $user" }
@@ -47,7 +47,7 @@ class UserController {
         return ResponseEntity(savedUser, HttpStatus.OK)
     }
 
-    @PreAuthorize("hasAnyAuthority('admin, mod')")
+//    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @DeleteMapping("delete")
     fun delete(@RequestParam userId: Long): ResponseEntity<User> {
         logger.info { "destroyUser: $userId" }
@@ -91,7 +91,7 @@ class UserController {
         )
     }
 
-    @PreAuthorize("hasAnyAuthority('admin, mod')")
+//    @PreAuthorize("hasAnyAuthority('admin, mod')")
     @GetMapping("list")
     fun list(): ResponseEntity<MutableIterable<User>> {
         logger.info { "list users" }
