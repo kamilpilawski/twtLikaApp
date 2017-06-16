@@ -14,4 +14,6 @@ interface TagRepo : JpaRepository<Tag, Long> {
     fun findAllByPostsId(postId: Long): List<Tag>
 
     fun findByTitle(tag: String): Optional<Tag>
+    fun findAllByTitle(tagsList: List<String>): Optional<List<Tag>>
+    fun findAllByTitleIn(tagsList: List<String>): Optional<List<Tag>>
 }

@@ -13,7 +13,6 @@ import us.tla.repository.UserRepo
 import us.tla.service.LikesService
 import us.tla.service.PostService
 import us.tla.service.security.CurrentUser
-import javax.validation.Valid
 
 /**
  * Created by Kamil on 24.05.2017.
@@ -50,8 +49,9 @@ class PostController {
 
         logger.info { "addPost: $request by user: ${currentUser.name}" }
 
-//        val savedPost = postRepo.save(post.copy(userId = currentUser.user.id))
-        return ResponseEntity(/*savedPost*/Post(), HttpStatus.OK)
+        val savedPost = postService.createPostWithTags(Post(title = request["title"].toString(), content = request["content"].toString(), userId = currentUser.user.id), request["tags"])
+
+        return ResponseEntity(savedPost.orElse(Post()), if (savedPost.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND)
     }
 
     @PutMapping("edit")
