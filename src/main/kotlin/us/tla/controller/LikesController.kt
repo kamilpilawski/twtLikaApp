@@ -43,8 +43,8 @@ class LikesController {
         logger.info { "remove likepostId: $postId" }
         val user = userRepo.findByEmail(principal.name).get()
         val like = likesRepo.findByUserIdAndPostId(user.id, postId)
-        if (null != like) {
-            likesRepo.delete(like)
+        if (like.isPresent) {
+            likesRepo.delete(like.get())
             return HttpStatus.OK
         } else {
             return HttpStatus.CONFLICT

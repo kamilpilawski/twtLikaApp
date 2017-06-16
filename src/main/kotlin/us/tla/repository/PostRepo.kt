@@ -9,7 +9,7 @@ import java.util.*
  * Created by Kamil on 24.05.2017.
  */
 interface PostRepo : CrudRepository<Post, Long> {
-    fun findAllByUserId(id: Long): Optional<List<Post>>
+    fun findAllByUserIdOrderByCreateDateDesc(id: Long): Optional<List<Post>>
 
     fun findByTitle(title: String): Optional<List<Post>>
 

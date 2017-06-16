@@ -33,7 +33,7 @@ data class Post(
         val createDate: Date? = null,
 
         @Column(name = "edit_date")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Warsaw")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Warsaw")//todo ten format dat w ogole nie dziala
         val editDate: Date? = null,
 
         @OneToMany(fetch = FetchType.EAGER)

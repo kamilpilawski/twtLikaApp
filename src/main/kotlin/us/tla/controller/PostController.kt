@@ -10,6 +10,7 @@ import us.tla.model.Post
 import us.tla.model.User
 import us.tla.repository.PostRepo
 import us.tla.repository.UserRepo
+import us.tla.service.LikesService
 import us.tla.service.PostService
 import us.tla.service.security.CurrentUser
 import javax.validation.Valid
@@ -31,6 +32,9 @@ class PostController {
 
     @Autowired
     lateinit var postService: PostService
+
+    @Autowired
+    lateinit var likesService: LikesService
 
     @GetMapping("liked")
     fun likedPosts(auth: Authentication): ResponseEntity<List<Post>> {
@@ -60,12 +64,13 @@ class PostController {
     @GetMapping("user/{userId}")
     fun findByUserId(@PathVariable userId: Long): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $userId" }
-        val post = postRepo.findAllByUserId(userId)
-        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+        val plainPosts = postRepo.findAllByUserIdOrderByCreateDateDesc(userId)
+        val isLikedPosts = plainPosts.get().map { it.copy(liked = likesService.isLiked(userId, it.id)) }
+        logger.info { "Result: ${isLikedPosts.joinToString("\n")}" }
 
         return ResponseEntity(
-                post.orElse(emptyList()),
-                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
+                isLikedPosts,
+                if (isLikedPosts.isNotEmpty()) HttpStatus.OK else HttpStatus.NOT_FOUND
         )
     }
 
@@ -76,7 +81,7 @@ class PostController {
 
         when {
             user.isPresent -> {
-                val post = postRepo.findAllByUserId(user.get().id)
+                val post = postRepo.findAllByUserIdOrderByCreateDateDesc(user.get().id)
                 logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
                 return ResponseEntity(
@@ -138,7 +143,7 @@ class PostController {
 
         when {
             user.isPresent -> {
-                val post = postRepo.findAllByUserId(user.get().id)
+                val post = postRepo.findAllByUserIdOrderByCreateDateDesc(user.get().id)
                 logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
 
                 return ResponseEntity(
