@@ -102,27 +102,25 @@ class PostController {
     }
 
     @GetMapping("title/{title}")
-    fun findByTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
+    fun findByTitle(@PathVariable title: String, auth: Authentication): ResponseEntity<List<Post>> {
         logger.info { "find post by title: $title" }
-        val post = postRepo.findByTitle(title)
-        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+        val currUser = auth.principal as CurrentUser
 
-        return ResponseEntity(
-                post.orElse(emptyList()),
-                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
-        )
+        val post = postRepo.findByTitle(title).orElse(emptyList()).map { it.copy(liked = likesService.isLiked(currUser.user.id, it.id)) }
+        logger.info { "Result: ${post.joinToString("\n")}" }
+
+        return ResponseEntity(post, if (post.isNotEmpty()) HttpStatus.OK else HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("tag/title/{title}")
-    fun findByTagTitle(@PathVariable title: String): ResponseEntity<List<Post>> {
-        logger.info { "find post by user id: $title" }
-        val post = postRepo.findByTagsTitle(title)
-        logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+    fun findByTagTitle(@PathVariable title: String, auth: Authentication): ResponseEntity<List<Post>> {
+        logger.info { "find post by title: $title" }
+        val currUser = auth.principal as CurrentUser
 
-        return ResponseEntity(
-                post.orElse(emptyList()),
-                if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
-        )
+        val post = postRepo.findByTagsTitle(title).orElse(emptyList()).map { it.copy(liked = likesService.isLiked(currUser.user.id, it.id)) }
+        logger.info { "Result: ${post.joinToString("\n")}" }
+
+        return ResponseEntity(post, if (post.isNotEmpty()) HttpStatus.OK else HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("tag/{id}")
@@ -159,20 +157,13 @@ class PostController {
     @GetMapping("followed/users")
     fun findFollowedUsersPosts(auth: Authentication): ResponseEntity<List<Post>> {
         logger.info { "find own posts, user: ${auth.name}" }
-        val user = userRepo.findByEmail(auth.name)
+        val currUser = auth.principal as CurrentUser
 
-        when {
-            user.isPresent -> {
-                val post = postRepo.findFollowedUsersPosts(user.get().id)
-                logger.info { "Result: ${post.orElse(emptyList()).joinToString("\n")}" }
+        val post = postRepo.findFollowedUsersPosts(currUser.user.id).get().map { it.copy(liked = likesService.isLiked(currUser.user.id, it.id)) }
+        logger.info { "Result: ${post.joinToString("\n")}" }
 
-                return ResponseEntity(
-                        post.orElse(emptyList()),
-                        if (post.isPresent) HttpStatus.OK else HttpStatus.NOT_FOUND
-                )
-            }
-            else -> return ResponseEntity(emptyList(), HttpStatus.NOT_FOUND)
-        }
+        return ResponseEntity(post, if (post.isNotEmpty()) HttpStatus.OK else HttpStatus.NOT_FOUND)
+
     }
 
 
