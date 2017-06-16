@@ -45,13 +45,13 @@ class PostController {
     }
 
     @PostMapping("save")
-    fun save(@RequestBody @Valid post: Post, auth: Authentication): ResponseEntity<Post> {
+    fun save(@RequestBody request: Map<String, Object>, auth: Authentication): ResponseEntity<Post> {
         val currentUser = auth.principal as CurrentUser
 
-        logger.info { "addPost: $post by user: ${currentUser.name}" }
+        logger.info { "addPost: $request by user: ${currentUser.name}" }
 
-        val savedPost = postRepo.save(post.copy(userId = currentUser.user.id))
-        return ResponseEntity(savedPost, HttpStatus.OK)
+//        val savedPost = postRepo.save(post.copy(userId = currentUser.user.id))
+        return ResponseEntity(/*savedPost*/Post(), HttpStatus.OK)
     }
 
     @PutMapping("edit")
@@ -62,10 +62,11 @@ class PostController {
     }
 
     @GetMapping("user/{userId}")
-    fun findByUserId(@PathVariable userId: Long): ResponseEntity<List<Post>> {
+    fun findByUserId(@PathVariable userId: Long, auth: Authentication): ResponseEntity<List<Post>> {
         logger.info { "find post by user id: $userId" }
         val plainPosts = postRepo.findAllByUserIdOrderByCreateDateDesc(userId)
-        val isLikedPosts = plainPosts.get().map { it.copy(liked = likesService.isLiked(userId, it.id)) }
+        val currentUser = auth.principal as CurrentUser
+        val isLikedPosts = plainPosts.get().map { it.copy(liked = likesService.isLiked(currentUser.user.id, it.id)) }
         logger.info { "Result: ${isLikedPosts.joinToString("\n")}" }
 
         return ResponseEntity(
